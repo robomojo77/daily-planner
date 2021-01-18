@@ -39,17 +39,14 @@ var businessHours = [
     },
 ];
 
-// Save Functions
-
-function saveTimeslot() {
-
-}
 
 function retrieveTimeSlots() {
     for (var i = 0; i < businessHours.length; i++) {
-        if (!localStorage.getItem("savedTask_" + i))
+        var testString = localStorage.getItem("savedTask_" + i);
+        if (!testString) {
         document.getElementById("saveStatus_" + i).innerHTML = "UNsaved";
-        document.getElementById("timeSlot_" + i).innerHTML = "Available";
+        document.getElementById("timeSlot_" + i).value = "Available";
+        }
         if (localStorage.getItem("savedTask_" + i) != undefined) {
             businessHours[i].task = localStorage.getItem("savedTask_" + i);
             document.getElementById("timeSlot_" + i).innerHTML = localStorage.getItem("savedTask_" + i);
@@ -95,20 +92,5 @@ $(document).on('click', '.saveBtn', function () {
         console.log(thingWeJustSet);
     }
 
-
-    /*if (businessHours[number].task = "Available") {
-        console.log(textToSave);
-        if (textToSave != "Available") {
-            localStorage.setItem("savedTask_" + number, textToSave);
-            retrieveTimeSlots();
-        }
-        var thingWeJustSet = localStorage.getItem("savedTask_" + number);
-        console.log(thingWeJustSet);
-    } else if (businessHours[number].task != "Available") {
-        localStorage.removeItem("savedTask_" + number);
-        retrieveTimeSlots();
-    } else {
-        return;
-    } */
 });
 
