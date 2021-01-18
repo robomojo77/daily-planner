@@ -3,39 +3,39 @@
 var businessHours = [
     {
         id: 9,
-        task: "Available",
+        task: "",
     },
     {
         id: 10,
-        task: "Available",
+        task: "",
     },
     {
         id: 11,
-        task: "Available",
+        task: "",
     },
     {
         id: 12,
-        task: "Available",
+        task: "",
     },
     {
         id: 13,
-        task: "Available",
+        task: "",
     },
     {
         id: 14,
-        task: "Available",
+        task: "",
     },
     {
         id: 15,
-        task: "Available",
+        task: "",
     },
     {
         id: 16,
-        task: "Available",
+        task: "",
     },
     {
         id: 17,
-        task: "Available",
+        task: "",
     },
 ];
 
@@ -47,10 +47,13 @@ function saveTimeslot() {
 
 function retrieveTimeSlots() {
     for (var i = 0; i < businessHours.length; i++) {
-        var testString = localStorage.getItem("savedTask_" + i)
-        if (testString != undefined) {
-            businessHours[i].task = testString;
-            document.getElementById("timeSlot_" + i).innerHTML = testString;
+        if (!localStorage.getItem("savedTask_" + i))
+        document.getElementById("saveStatus_" + i).innerHTML = "UNsaved";
+        document.getElementById("timeSlot_" + i).innerHTML = "Available";
+        if (localStorage.getItem("savedTask_" + i) != undefined) {
+            businessHours[i].task = localStorage.getItem("savedTask_" + i);
+            document.getElementById("timeSlot_" + i).innerHTML = localStorage.getItem("savedTask_" + i);
+            document.getElementById("saveStatus_" + i).innerHTML = "Saved";
         }
     }
 }
@@ -77,11 +80,35 @@ $(document).on('click', '.saveBtn', function () {
     var saveString = this.id;
     var number = saveString[saveString.length - 1];
     var textToSave = $("#timeSlot_" + number).val();
-    if (businessHours[number].task = "Available") {
+    if (textToSave === localStorage.getItem("savedTask_" + number)) {
+        localStorage.removeItem("savedTask_" + number);
+        document.getElementById("saveStatus_" + number).innerHTML = "UNsaved";
+        document.getElementById("timeSlot_" + number).innerHTML = "Available";
+    } else {
+        var textToSave = $("#timeSlot_" + number).val();
         console.log(textToSave);
-        localStorage.setItem("savedTask_" + number, textToSave);
-        var thingWeJustSet = localStorage.getItem("timeSlot_" + number);
+        if (textToSave != "Available") {
+            localStorage.setItem("savedTask_" + number, textToSave);
+        }
+        retrieveTimeSlots();
+        var thingWeJustSet = localStorage.getItem("savedTask_" + number);
         console.log(thingWeJustSet);
     }
+
+
+    /*if (businessHours[number].task = "Available") {
+        console.log(textToSave);
+        if (textToSave != "Available") {
+            localStorage.setItem("savedTask_" + number, textToSave);
+            retrieveTimeSlots();
+        }
+        var thingWeJustSet = localStorage.getItem("savedTask_" + number);
+        console.log(thingWeJustSet);
+    } else if (businessHours[number].task != "Available") {
+        localStorage.removeItem("savedTask_" + number);
+        retrieveTimeSlots();
+    } else {
+        return;
+    } */
 });
 
